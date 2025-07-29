@@ -1,13 +1,15 @@
-name: Build Binaries
+name: Build and Draft Release
 
 on:
   push:
-    branches: [main]
-  pull_request:
+    tags:
+      - 'v*'  # Запуск по тегам, например: v1.0.0
 
 jobs:
   build:
+    name: Build binaries
     runs-on: ubuntu-latest
+
     strategy:
       matrix:
         goos: [linux, windows, darwin]
@@ -22,18 +24,44 @@ jobs:
         with:
           go-version: '1.24'
 
-      - name: Build binary
+      - name: Build
         run: |
           mkdir -p dist
           EXT=""
           if [ "${{ matrix.goos }}" = "windows" ]; then
             EXT=".exe"
           fi
-          OUTPUT="dist/goproxy_${{ matrix.goos }}_${{ matrix.goarch }}${EXT}"
-          GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} go build -o "$OUTPUT" .
+          OUTFILE="goproxy_${{ matrix.goos }}_${{ matrix.goarch }}${EXT}"
+          GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} go build -o "dist/$OUTFILE" .
 
-      - name: Upload artifacts
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: goproxy-${{ matrix.goos }}-${{ matrix.goarch }}
           path: dist/
+
+  release:
+    name: Create Draft Release
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download all build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Flatten artifact structure
+        run: |
+          mkdir release
+          find artifacts -type f -exec cp {} release/ \;
+
+      - name: Create Draft Release
+        uses: softprops/action-gh-release@v2
+        with:
+          draft: true
+          tag_name: ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
+          files: release/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
