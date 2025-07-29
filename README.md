@@ -10,22 +10,35 @@
 
 ## Установка
 
+Для простой и быстрой установки выполните команду:
+
+```bash
+sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/Rxflex/chukproxy/refs/heads/main/download.sh)"
+````
+
+Далее скрипт проведёт вас по всем шагам настройки и установки.
+
+Если хотите установить вручную, следуйте инструкции:
+
 1. Установите Go:
    Скачайте и установите Go с [официального сайта](https://golang.org/dl/).
 
 2. Клонируйте репозиторий:
+
    ```bash
    git clone https://github.com/Rxflex/chukproxy.git
    cd chukproxy
    ```
 
 3. Установите зависимости:
+
    ```bash
    go mod tidy
    ```
 
 4. Создайте конфигурационный файл `config.yaml`:
    Пример конфигурационного файла:
+
    ```yaml
    database:
      user: "your_user"
@@ -36,14 +49,15 @@
    ```
 
 5. Запустите сервер:
+
    ```bash
    go run main.go
    ```
 
 ## Структура проекта
 
-- `main.go`: Основной файл с логикой работы прокси-сервера.
-- `config.yaml`: Конфигурационный файл для подключения к базе данных.
+* `main.go`: Основной файл с логикой работы прокси-сервера.
+* `config.yaml`: Конфигурационный файл для подключения к базе данных.
 
 ## Конфигурация базы данных
 
@@ -70,29 +84,43 @@ CREATE TABLE routes (
 This project is a Go-based reverse proxy server that dynamically reads redirection rules from a MySQL database and proxies connections over TCP and UDP. The server supports proxying both TCP and UDP connections, as well as both protocols simultaneously. The database connection settings are read from a YAML configuration file.
 
 ## Features:
-- Reverse proxy server with TCP and UDP support.
-- Dynamic synchronization with a MySQL database to add, remove, and update rules.
-- Database connection configuration from the `config.yaml` file.
-- Automatic addition/removal of listening ports based on database entries.
+
+* Reverse proxy server with TCP and UDP support.
+* Dynamic synchronization with a MySQL database to add, remove, and update rules.
+* Database connection configuration from the `config.yaml` file.
+* Automatic addition/removal of listening ports based on database entries.
 
 ## Installation
+
+For quick and easy installation, run:
+
+```bash
+sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/Rxflex/chukproxy/refs/heads/main/download.sh)"
+```
+
+The script will guide you through setup and installation steps.
+
+To install manually, follow these steps:
 
 1. Install Go:
    Download and install Go from the [official website](https://golang.org/dl/).
 
 2. Clone the repository:
+
    ```bash
    git clone https://github.com/Rxflex/chukproxy.git
    cd chukproxy
    ```
 
 3. Install dependencies:
+
    ```bash
    go mod tidy
    ```
 
 4. Create the `config.yaml` configuration file:
    Example configuration file:
+
    ```yaml
    database:
      user: "your_user"
@@ -103,14 +131,15 @@ This project is a Go-based reverse proxy server that dynamically reads redirecti
    ```
 
 5. Run the server:
+
    ```bash
    go run main.go
    ```
 
 ## Project Structure
 
-- `main.go`: Main file containing the reverse proxy server logic.
-- `config.yaml`: Configuration file for the database connection.
+* `main.go`: Main file containing the reverse proxy server logic.
+* `config.yaml`: Configuration file for the database connection.
 
 ## Database Configuration
 
