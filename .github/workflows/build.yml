@@ -2,9 +2,8 @@ name: Build and Draft Release
 
 on:
   push:
-    tags:
-      - 'v*'  # Запуск по тегам, например: v1.0.0
-
+    branches: [main]
+    
 jobs:
   build:
     name: Build binaries
