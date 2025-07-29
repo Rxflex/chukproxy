@@ -15,7 +15,6 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-// Структура для конфигурации базы данных
 type Config struct {
 	Database struct {
 		User     string `yaml:"user"`
